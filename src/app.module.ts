@@ -1,10 +1,31 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { DatabaseModule } from './database/database.module';
+import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
+import { VolunteersModule } from './volunteers/volunteers.module';
+import { CartasModule } from './cartas/cartas.module';
+import { SuggestionsModule } from './photos/suggestions.module';
+import { User } from './users/entities/user.entity';
+import { Volunteer } from './volunteers/entities/volunteer.entity';
+import { Carta } from './cartas/entities/carta.entity';
+import { Suggestion } from './photos/entities/suggestion.entity';
+import { typeOrmConfig } from './database/database.module'; // Certifique-se de que o caminho está correto
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }), // Carrega variáveis de ambiente globalmente
+    TypeOrmModule.forRoot(typeOrmConfig),
+    TypeOrmModule.forFeature([User, Volunteer, Carta, Suggestion]), // Registra entidades para injeção de dependência
+    AuthModule, // Inclui AuthModule que deve fornecer JwtAuthGuard
+    UsersModule,
+    VolunteersModule,
+    CartasModule,
+    SuggestionsModule,
+    DatabaseModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
