@@ -1,21 +1,36 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToOne } from 'typeorm';
-import { Volunteer } from '../../volunteers/entities/volunteer.entity';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+
 @Entity()
 export class Carta {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  title: string;
+  nameOfKid: string;
 
   @Column()
-  picture: string;
+  nameOfPersonResponsible: string;
 
-  @Column('text')
-  description: string;
+  @Column()
+  telefone: string;
 
-  @ManyToOne(() => Volunteer, volunteer => volunteer.cartas)
-  volunteer: Volunteer;  // Relaciona com o modelo Volunteer
+  @Column()
+  cpfOfKid: string;
+
+  @Column('date')
+  dateOfBirth: Date;
+
+  @Column()
+  address: string;
+
+  @Column()
+  city: string;
+
+  @Column()
+  cep: string;
+
+  @Column()
+  codStatus: number
 
   @Column()
   isOccupied: string;

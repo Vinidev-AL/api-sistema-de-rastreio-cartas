@@ -1,23 +1,43 @@
-import { IsString, IsOptional, IsBooleanString, IsUUID } from 'class-validator';
+import { IsString, IsOptional, IsBooleanString, IsDate, IsNotEmpty } from 'class-validator';
 
 export class UpdateCartaDto {
   @IsString()
   @IsOptional()
-  title?: string;
+  nameOfKid?: string;
 
   @IsString()
   @IsOptional()
-  picture?: string;
+  nameOfPersonResponsible?: string;
 
   @IsString()
   @IsOptional()
-  description?: string;
+  telefone?: string;
+
+  @IsString()
+  @IsOptional()
+  cpfOfKid?: string;
+
+  @IsDate()
+  @IsOptional()
+  dateOfBirth?: Date;
+
+  @IsString()
+  @IsOptional()
+  address?: string;
+
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @IsString()
+  @IsOptional()
+  cep?: string;
+
+  @IsString()
+  @IsOptional()
+  codStatus: number
 
   @IsBooleanString()
   @IsOptional()
   isOccupied?: string;
-
-  @IsUUID()
-  @IsOptional()
-  volunteerId?: string; // ID do voluntário associado
 }

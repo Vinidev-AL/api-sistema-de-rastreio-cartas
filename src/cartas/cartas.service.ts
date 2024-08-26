@@ -25,12 +25,12 @@ export class CartasService {
     return this.cartasRepository.findOneBy({ id });
   }
 
-  async searchByDescription(description: string): Promise<Carta[]> { // Renomeado para 'searchByDescription'
-    if (!description) {
+  async searchByDescription(nameOfKid: string): Promise<Carta[]> { // Renomeado para 'searchByDescription'
+    if (!nameOfKid) {
       return []; // Retorna uma lista vazia se o parâmetro de busca for vazio
     }
     return this.cartasRepository.find({
-      where: { description: Like(`%${description}%`) },
+      where: { nameOfKid: Like(`%${nameOfKid}%`) },
     });
   }
 

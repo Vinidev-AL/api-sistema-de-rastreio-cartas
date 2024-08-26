@@ -18,8 +18,8 @@ export class CartasController {
   }
 
   @Get('search')
-  async searchByDescription(@Query('description') description: string) { 
-    return this.cartasService.searchByDescription(description); 
+  async searchByDescription(@Query('nameOfKid') nameOfKid: string) { 
+    return this.cartasService.searchByDescription(nameOfKid); 
   }
 
   @Get(':id')

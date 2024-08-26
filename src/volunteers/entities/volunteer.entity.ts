@@ -27,9 +27,6 @@ export class Volunteer {
   @Column()
   picture: string;
 
-  @OneToMany(() => Carta, carta => carta.volunteer)
-  cartas: Carta[];  // Relaciona com o modelo Service
-
   @CreateDateColumn()
   created_at: Date;
 
