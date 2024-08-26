@@ -1,8 +1,8 @@
-// src/users/entities/user.entity.ts
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { Role } from '../../users/roles/roles.enum';
 
 @Entity()
+@Unique(['cpf'])  // Garante que o CPF seja único
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string;

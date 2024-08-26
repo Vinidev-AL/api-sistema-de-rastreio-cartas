@@ -1,9 +1,11 @@
-import { IsString, IsEmail, IsOptional, IsIn, IsEnum } from 'class-validator';
+// src/users/dtos/update-user.dto.ts
+import { IsString, IsOptional, IsEnum, Matches } from 'class-validator';
 import { Role } from '../../users/roles/roles.enum';
 
 export class UpdateUserDto {
   @IsOptional()
   @IsString()
+  @Matches(/^\d{11}$/, { message: 'CPF must be 11 digits' }) // Validação para CPF
   cpf: string;
 
   @IsOptional()

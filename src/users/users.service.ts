@@ -1,4 +1,3 @@
-// src/users/users.service.ts
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -31,18 +30,18 @@ export class UsersService {
     return this.userRepository.save(user);
   }
 
-  async findOne(id: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({ id });
+  async findOne(cpf: string): Promise<User> {
+    const user = await this.userRepository.findOneBy({ cpf });
     if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      throw new NotFoundException(`User with cpf ${cpf} not found`);
     }
     return user;
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOneBy({ id });
+  async update(cpf: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOneBy({ cpf });
     if (!user) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      throw new NotFoundException(`User with cpf ${cpf} not found`);
     }
 
     if (updateUserDto.password) {

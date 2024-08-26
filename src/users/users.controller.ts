@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, Param, Patch, UseGuards } from '@nestjs/co
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard'
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from './roles/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from './roles/roles.enum';
@@ -18,14 +18,14 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
-  @Get(':id')
+  @Get(':cpf')  // Alterado para CPF
   @Roles(Role.Admin, Role.Funcionario)
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+  findOne(@Param('cpf') cpf: string) {  // Alterado para CPF
+    return this.usersService.findOne(cpf);  // Alterado para CPF
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+  @Patch(':cpf')  // Alterado para CPF
+  update(@Param('cpf') cpf: string, @Body() updateUserDto: UpdateUserDto) {  // Alterado para CPF
+    return this.usersService.update(cpf, updateUserDto);  // Alterado para CPF
   }
 }
