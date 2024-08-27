@@ -13,17 +13,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
-  @Roles(Role.Admin, Role.Funcionario)
+  @Roles(Role.Admin)
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
-
+  @Roles(Role.Admin)
   @Get(':cpf')  // Alterado para CPF
-  @Roles(Role.Admin, Role.Funcionario)
   findOne(@Param('cpf') cpf: string) {  // Alterado para CPF
     return this.usersService.findOne(cpf);  // Alterado para CPF
   }
-
+  @Roles(Role.Admin)
   @Patch(':cpf')  // Alterado para CPF
   update(@Param('cpf') cpf: string, @Body() updateUserDto: UpdateUserDto) {  // Alterado para CPF
     return this.usersService.update(cpf, updateUserDto);  // Alterado para CPF

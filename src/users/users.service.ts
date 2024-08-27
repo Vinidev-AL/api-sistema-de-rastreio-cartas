@@ -31,18 +31,15 @@ export class UsersService {
   }
 
   async findOne(cpf: string): Promise<User> {
-    const user = await this.userRepository.findOneBy({ cpf });
+    const user = await this.userRepository.findOne({ where: { cpf } });
     if (!user) {
       throw new NotFoundException(`User with cpf ${cpf} not found`);
     }
     return user;
   }
-
+  
   async update(cpf: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.userRepository.findOneBy({ cpf });
-    if (!user) {
-      throw new NotFoundException(`User with cpf ${cpf} not found`);
-    }
+    const user = await this.findOne(cpf);
 
     if (updateUserDto.password) {
       updateUserDto.password = await bcrypt.hash(updateUserDto.password, this.saltRounds);
@@ -57,7 +54,7 @@ export class UsersService {
   }
 
   async validateUser(cpf: string, password: string): Promise<User | undefined> {
-    const user = await this.userRepository.findOne({ where: { cpf } });
+    const user = await this.findOne(cpf);
     if (user && await bcrypt.compare(password, user.password)) {
       return user;
     }

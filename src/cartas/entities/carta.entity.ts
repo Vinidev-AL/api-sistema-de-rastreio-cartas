@@ -5,20 +5,50 @@ export class Carta {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
-  title: string;
+  @Column({ type: 'varchar', length: 255 })
+  nameOfKid: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  nameOfPersonResponsible: string;
+
+  @Column({ type: 'varchar', length: 20 })
+  telefone: string;
+
+  @Column({ type: 'varchar', length: 11 })
+  cpfOfKid: string;
+
+  @Column({ type: 'date' })
+  dateOfBirth: Date;
+
+  @Column({ type: 'varchar', length: 255 })
+  address: string;
+
+  @Column({ type: 'varchar', length: 255 })
+  city: string;
+
+  @Column({ type: 'varchar', length: 8 })
+  cep: string;
+
+  @Column({ type: 'int' })
+  codStatus: number;
+
+  @Column({ type: 'boolean' })
+  isOccupied: boolean;
+
+  @ManyToOne(() => Volunteer, (volunteer) => volunteer.cartas)
+  volunteer: Volunteer[];
 
   @Column()
-  picture: string;
-
-  @Column('text')
-  description: string;
-
-  @ManyToOne(() => Volunteer, volunteer => volunteer.cartas)
-  volunteer: Volunteer;  // Relaciona com o modelo Volunteer
+  pictureOne: string;
 
   @Column()
-  isOccupied: string;
+  pictureTwo: string;
+  
+  @Column()
+  pictureThree: string;
+
+  @Column()
+  pictureFour: string;
 
   @CreateDateColumn()
   created_at: Date;

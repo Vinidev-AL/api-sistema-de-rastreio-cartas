@@ -3,7 +3,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../users/entities/user.entity';
 import { Volunteer } from '../volunteers/entities/volunteer.entity';
 import { Carta } from '../cartas/entities/carta.entity';
-import { Suggestion } from '../photos/entities/suggestion.entity';
 import * as dotenv from 'dotenv';
 
 dotenv.config()
@@ -16,7 +15,7 @@ export const typeOrmConfig = {
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
   autoLoadEntities: true, // Carrega automaticamente as entidades
-  entities: [User, Volunteer, Carta, Suggestion], // Lista as entidades explicitamente
+  entities: [User, Volunteer, Carta], // Lista as entidades explicitamente
   synchronize: true, // Usar com cuidado, ideal para desenvolvimento
 };
 

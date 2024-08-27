@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsBooleanString, Matches } from 'class-validator';
+import { IsString, IsNotEmpty, IsBooleanString, Matches, IsNumber, IsEnum } from 'class-validator';
+import { Role } from '../../users/roles/roles.enum';
 
 export class CreateVolunteerDto {
   @IsString()
@@ -8,6 +9,15 @@ export class CreateVolunteerDto {
   })
   name: string;
 
+  @IsNotEmpty()
+  @IsString()
+  @Matches(/^\d{11}$/, { message: 'CPF must be 11 digits' }) // Validação para CPF
+  cpf: string;
+
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
   @IsString()
   @IsNotEmpty()
   @Matches(/^[0-9]+$/, {
@@ -15,30 +25,32 @@ export class CreateVolunteerDto {
   })
   telefone: string; 
   
-  @IsString()
+  @IsNumber()
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9\s]+$/, {
-    message: 'A habilidade deve conter apenas letras, números e espaços.',
+    message: 'A tempo de meses deve conter números',
   })
-  ability: string;
-
-  @IsBooleanString()
-  @IsNotEmpty()
-  volunteerCourse: string;
-
-  @IsBooleanString()
-  @IsNotEmpty()
-  signedTheTerm: string;
-
+  tempoMeses: number;
   
   @IsString()
   @IsNotEmpty()
   @Matches(/^[a-zA-Z0-9\s]+$/, {
-    message: 'A habilidade deve conter apenas letras, números e espaços.',
+    message: 'A persona deve conter apenas letras, números e espaços.',
   })  
   @IsBooleanString()
   personalDescription: string;
 
   @IsString()
+  @IsNotEmpty()
+  @Matches(/^[a-zA-Z0-9\s]+$/, { message: 'A cidade deve conter apenas letras, números e espaços.'})
+  city: string;
+
+  @IsString()
   picture: string;
+
+  @IsNotEmpty()
+  @IsString()
+  @IsEnum(Role, { message: 'Invalid role' })
+  role: Role;
+  
 }

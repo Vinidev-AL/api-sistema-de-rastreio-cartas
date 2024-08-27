@@ -1,38 +1,56 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
 import { Carta } from '../../cartas/entities/carta.entity';
+import { Role } from '../../users/roles/roles.enum';
 
-@Entity()
+@Entity('volunteers')
 export class Volunteer {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   name: string;
 
-  @Column()
+  @Column({
+    type: 'varchar',
+    length: 11,
+    unique: true, // Garante que o CPF seja único, se necessário
+  })
+  cpf: string;
+
+  @Column({length: 32})
+  password: string;
+
+  @Column({ type: 'varchar', length: 20 })
   telefone: string; 
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   ability: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   volunteerCourse: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255 })
   signedTheTerm: string;
 
-  @Column('text')
+  @Column({ type: 'text' })
   personalDescription: string;
 
-  @Column()
+  @Column({ type: 'varchar', length: 255, nullable: true })
   picture: string;
 
-  @OneToMany(() => Carta, carta => carta.volunteer)
-  cartas: Carta[];  // Relaciona com o modelo Service
-
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ type: 'timestamp' })
   updated_at: Date;
+
+  @OneToMany(() => Carta, (carta) => carta.volunteer)
+  cartas: Carta[];
+
+  @Column({
+    type: 'enum',
+    enum: Role,
+    default: Role.Adotante,
+  })
+  role: Role;
 }

@@ -1,18 +1,32 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { CreateVolunteerDto } from './dtos/create-volunteer.dto';
 import { UpdateVolunteerDto } from './dtos/update-volunteer.dto';
 import { Volunteer } from './entities/volunteer.entity';
 import { Repository } from 'typeorm';
+import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Role } from '../users/roles/roles.enum';
 
 @Injectable()
 export class VolunteersService {
+  private readonly saltRounds = 10;
   constructor(
     @InjectRepository(Volunteer)
     private readonly volunteerRepository: Repository<Volunteer>,
   ) {}
 
   async create(createVolunteerDto: CreateVolunteerDto): Promise<Volunteer> {
+    // Verifica se o role é válido, se o DTO tiver um campo 'role'
+    if (createVolunteerDto.role && !Object.values(Role).includes(createVolunteerDto.role)) {
+      throw new BadRequestException('Invalid role');
+    }
+
+    // Se o DTO tiver um campo 'password', faz o hash
+    if (createVolunteerDto.password) {
+      const hashedPassword = await bcrypt.hash(createVolunteerDto.password, this.saltRounds);
+      createVolunteerDto.password = hashedPassword;
+    }
+
     const volunteer = this.volunteerRepository.create(createVolunteerDto);
     return this.volunteerRepository.save(volunteer);
   }
@@ -21,21 +35,27 @@ export class VolunteersService {
     return this.volunteerRepository.find();
   }
 
-  async findOne(id: string): Promise<Volunteer> {
-    const volunteer = await this.volunteerRepository.findOneBy({ id });
-    if (!volunteer) {
-      throw new NotFoundException(`Volunteer with ID ${id} not found`);
+  async findOne(cpf: string): Promise<Volunteer> {
+    const user = await this.volunteerRepository.findOne({ where: { cpf } });
+    if (!user) {
+      throw new NotFoundException(`User with cpf ${cpf} not found`);
     }
-    return volunteer;
+    return user;
   }
 
-  async update(id: string, updateVolunteerDto: UpdateVolunteerDto): Promise<Volunteer> {
-    const volunteer = await this.volunteerRepository.findOneBy({ id });
-    if (!volunteer) {
-      throw new NotFoundException(`Volunteer with ID ${id} not found`);
+  async update(cpf: string, updateVolunteerDto: UpdateVolunteerDto): Promise<Volunteer> {
+    const user = await this.findOne(cpf);
+
+    if (updateVolunteerDto.password) {
+      updateVolunteerDto.password = await bcrypt.hash(updateVolunteerDto.password, this.saltRounds);
     }
-    Object.assign(volunteer, updateVolunteerDto);
-    return this.volunteerRepository.save(volunteer);
+
+    if (updateVolunteerDto.role && !Object.values(Role).includes(updateVolunteerDto.role)) {
+      throw new BadRequestException('Invalid role');
+    }
+
+    Object.assign(user, updateVolunteerDto);
+    return this.volunteerRepository.save(user);
   }
 
   async remove(id: string): Promise<void> {

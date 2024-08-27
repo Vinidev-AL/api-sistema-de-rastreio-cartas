@@ -1,5 +1,5 @@
 // src/users/dtos/create-user.dto.ts
-import { IsNotEmpty, IsString, IsEnum, Matches } from 'class-validator';
+import { IsNotEmpty, IsString, IsEnum, Matches, IsEmail } from 'class-validator';
 import { Role } from '../../users/roles/roles.enum';
 
 export class CreateUserDto {
@@ -19,6 +19,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   password: string;
+
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   @IsString()

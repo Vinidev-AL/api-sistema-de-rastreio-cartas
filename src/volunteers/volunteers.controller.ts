@@ -7,12 +7,13 @@ import { RolesGuard } from '../users/roles/roles.guard';
 import { Roles } from '../common/decorators/roles.decorator';
 import { Role } from '../users/roles/roles.enum';
 
-@Controller('volunteers')
+@Controller('carteiros')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class VolunteersController {
   constructor(private readonly volunteersService: VolunteersService) {}
 
   @Post()
+  @Roles(Role.Admin)
   create(@Body() createVolunteerDto: CreateVolunteerDto) {
     return this.volunteersService.create(createVolunteerDto);
   }
@@ -23,18 +24,21 @@ export class VolunteersController {
     return this.volunteersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.volunteersService.findOne(id);
+  @Get(':cpf')
+  @Roles(Role.Admin)
+  findOne(@Param('cpf') cpf: string) {
+    return this.volunteersService.findOne(cpf);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVolunteerDto: UpdateVolunteerDto) {
-    return this.volunteersService.update(id, updateVolunteerDto);
+  @Patch(':cpf')
+  @Roles(Role.Admin)
+  update(@Param('cpf') cpf: string, @Body() updateVolunteerDto: UpdateVolunteerDto) {
+    return this.volunteersService.update(cpf, updateVolunteerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.volunteersService.remove(id);
+  @Delete(':cpf')
+  @Roles(Role.Admin)
+  remove(@Param('cpf') cpf: string) {
+    return this.volunteersService.remove(cpf);
   }
 }

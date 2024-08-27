@@ -1,23 +1,4 @@
-import { IsString, IsOptional, IsBooleanString, IsUUID } from 'class-validator';
+import { PartialType } from '@nestjs/mapped-types';
+import { CreateCartaDto } from './create-carta.dto';
 
-export class UpdateCartaDto {
-  @IsString()
-  @IsOptional()
-  title?: string;
-
-  @IsString()
-  @IsOptional()
-  picture?: string;
-
-  @IsString()
-  @IsOptional()
-  description?: string;
-
-  @IsBooleanString()
-  @IsOptional()
-  isOccupied?: string;
-
-  @IsUUID()
-  @IsOptional()
-  volunteerId?: string; // ID do voluntário associado
-}
+export class UpdateCartaDto extends PartialType(CreateCartaDto) {}
